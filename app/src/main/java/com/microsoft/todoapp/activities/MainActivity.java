@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.microsoft.todoapp.R;
 import com.microsoft.todoapp.database.DatabaseHelper;
+import com.microsoft.todoapp.exceptions.InvalidValueException;
 
 import java.util.ArrayList;
 
@@ -33,13 +34,18 @@ public class MainActivity extends AppCompatActivity {
                 AlertDialog dialog = new AlertDialog.Builder(MainActivity.this)
                         .setTitle(R.string.add_task_dialog_title)
                         .setView(taskEditText)
-                        .setNegativeButton(R.string.add, new DialogInterface.OnClickListener() {
+                        .setPositiveButton(R.string.add, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 saveTask(String.valueOf(taskEditText.getText()));
                             }
                         })
-                        .setPositiveButton(R.string.cancel, null)
+                        .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                // Call SDK for event
+                            }
+                        })
                         .create();
                 dialog.show();
             }
@@ -53,6 +59,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void saveTask(String task) {
+        if (task.isEmpty()) {
+            throw new IllegalArgumentException("Task cannot be null or empty.");
+        } else if (task.trim().isEmpty()) {
+            throw new InvalidValueException("Task cannot be null or empty.");
+        }
         mHelper.saveTask(task);
         updateUI();
     }
