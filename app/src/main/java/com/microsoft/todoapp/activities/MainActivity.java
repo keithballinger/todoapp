@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -29,11 +30,12 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.add_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final EditText taskEditText = new EditText(MainActivity.this);
+                LinearLayout layout = (LinearLayout) getLayoutInflater().inflate(R.layout.new_task, null);
+                final EditText taskEditText = (EditText) layout.findViewById(R.id.task);
                 taskEditText.setSingleLine();
                 AlertDialog dialog = new AlertDialog.Builder(MainActivity.this)
                         .setTitle(R.string.add_task_dialog_title)
-                        .setView(taskEditText)
+                        .setView(layout)
                         .setPositiveButton(R.string.add, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
