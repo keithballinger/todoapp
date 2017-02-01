@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 // Call SDK for event
-                                Analytics.trackEvent("Task Aancelled");
+                                Analytics.trackEvent("Task Cancelled");
                             }
                         })
                         .create();
