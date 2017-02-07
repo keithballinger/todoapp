@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.microsoft.azure.mobile.MobileCenter;
@@ -19,6 +20,8 @@ import com.microsoft.todoapp.database.DatabaseHelper;
 import com.microsoft.todoapp.exceptions.InvalidValueException;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -39,6 +42,11 @@ public class MainActivity extends AppCompatActivity {
                 LinearLayout layout = (LinearLayout) getLayoutInflater().inflate(R.layout.new_task, null);
                 final EditText taskEditText = (EditText) layout.findViewById(R.id.task);
                 taskEditText.setSingleLine();
+
+                Analytics.trackEvent("+ clicked");
+
+                final Spinner typeSpinner = (Spinner) layout.findViewById(R.id.type);
+
                 AlertDialog dialog = new AlertDialog.Builder(MainActivity.this)
                         .setTitle(R.string.add_task_dialog_title)
                         .setView(layout)
@@ -46,12 +54,17 @@ public class MainActivity extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 saveTask(String.valueOf(taskEditText.getText()));
+
+                                Map<String,String> properties=new HashMap<String,String>();
+                                properties.put("Task Type", typeSpinner.getSelectedItem().toString());
+                                Analytics.trackEvent("Task Added", properties);
                             }
                         })
                         .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 // Call SDK for event
+                                Analytics.trackEvent("Task Cancelled");
                             }
                         })
                         .create();
