@@ -11,9 +11,14 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.microsoft.azure.mobile.MobileCenter;
+import com.microsoft.azure.mobile.crashes.Crashes;
+import com.microsoft.azure.mobile.analytics.Analytics;
 import com.microsoft.todoapp.R;
 import com.microsoft.todoapp.database.DatabaseHelper;
 import com.microsoft.todoapp.exceptions.InvalidValueException;
+
+
 
 import java.util.ArrayList;
 
@@ -25,6 +30,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        MobileCenter.start(getApplication(), "2cebbec3-2085-44e6-a02f-1b56b23eabd6",
+                Analytics.class, Crashes.class);
+
         setContentView(R.layout.activity_main);
 
         findViewById(R.id.add_button).setOnClickListener(new View.OnClickListener() {
